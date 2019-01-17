@@ -1,0 +1,2 @@
+class SoundboardSound < ApplicationRecord
+end

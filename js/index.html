@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="src/index.css">
+    <title></title>
+  </head>
+  <body>
+    <div id="splash" class="splashContainer">
+      <div class="splashItems">
+
+        <h1>Welcome to My Soundboard Buddy!</h1>
+        <form id="loginForm">
+          <input id="usernameField" type="text">
+          <input id="loginBtn" type="submit" value="Log In">
+        </form>
+        <button id="newUser">New User</button>
+      </div>
+    </div>
+
+    <div id="internal" style="display: none;" >
+
+      <div id="usercontainer" class="topnav">
+        <div class="topnavItem">
+
+          <h5>My Soundboard Buddy</h1>
+        </div>
+        <div class="topnavItem">
+
+            <button id="logoutBtn">Log Out</button>
+        </div>
+      </div>
+
+
+      <div id="audioDiv">
+      </div>
+
+      <div class="mainContainer">
+
+        <div id="savedSB" class="leftbar mainitem">
+
+          <div class="">
+            <h5 id="welcome"></h5>
+            <h4>Your Soundboards</h4>
+          </div>
+
+          <div class="">
+            <ol id="sbList">
+            </ol>
+          </div>
+
+        </div>
+
+        <div id = "soundboardCountainer" class="center mainitem">
+          <div id="soundboard">
+            <div class="">
+              <h2 id="currentSBName">Untitled</h2>
+            </div>
+            <div class="firstRow">
+              <div class="foo blue" id="q">q</div>
+              <div class="foo purple" id="w">w</div>
+              <div class="foo wine" id="e">e</div>
+            </div>
+
+            <div class="secondRow">
+              <div class="foo blue" id="a">a</div>
+              <div class="foo purple" id="s">s</div>
+              <div class="foo wine" id="d">d</div>
+            </div>
+
+            <div class=thirdRow"">
+              <div class="foo blue" id="z">z</div>
+              <div class="foo purple" id="x">x</div>
+              <div class="foo wine" id="c">c</div>
+            </div>
+
+            <div class="soundboardButtons">
+              <button id="editBtn" data-action="off">Edit: Off</button>
+              <button id="saveBtn" data-action="save">Save</button>
+              <button id="newBtn" data-action="new">New</button>
+
+                <br></br>
+                <form id="newForm" style="display: none;">
+                  <input id="newName" type="text" placeholder="Enter your soundboard name">
+                  <br></br>
+                  <input id="newFormBtn" type="submit" value="Make new soundboard!">
+                </form>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div id = "soundsContainer" class="rightbar mainitem">
+          <div id="newSoundDiv">
+            <form id="newSoundForm">
+              <input id="newSoundName" type="text" placeholder="Name this sound!"> <br>
+              <input id="newSoundURL" type="text" placeholder="Sound URL"> <br>
+              <input type="submit" >
+            </form>
+          </div>
+          <div id="soundsListDiv">
+            <ol id="soundList">
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+  <script src = "src/index.js"></script>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</html>
