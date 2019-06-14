@@ -1,6 +1,8 @@
 let clickedSoundID
 let clickedKeyID
 let clickedSBID
+let clickedOnSB
+let clickedTarget
 let userID
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -139,21 +141,33 @@ document.addEventListener('DOMContentLoaded', () => {
           else if (e.target.dataset.action === "delete") {
             e.target.parentElement.remove()
             fetch(`${soundsURL}/${clickedSoundID}`, {
-              method: 'DELETE'})
-            }
-          })
+              method: 'DELETE'
+            })
+          }
+        })
 
-          soundboardDiv.addEventListener('click', (e) => {
-            if (editBtn.dataset.action === "on") {
-              if (e.target.id) {
-                clickedKeyID = e.target.id
-                console.log(clickedKeyID)
-                e.target.dataset.id = clickedSoundID
-              }
+        soundboardDiv.addEventListener('click', (e) => {
+          clickedOnSB = true
+          if (editBtn.dataset.action === "on") {
+            if (e.target.id) {
+              clickedKeyID = e.target.id
+              console.log(clickedKeyID)
+              e.target.dataset.id = clickedSoundID
             }
-          })
+          }
+        })
 
-          document.addEventListener('keypress', (e) => {
+        document.addEventListener('click', (e) => {
+          clickedTarget = e.target
+          if (soundboardDiv.contains(e.target)) {
+            clickedOnSB = true
+          } else {
+            clickedOnSB = false
+          }
+        })
+
+        document.addEventListener('keypress', (e) => {
+          if (clickedOnSB) {
             let keyName = e.key;
             let soundID = soundboard.querySelector(`#${keyName}`).dataset.id
             console.log(soundID)
@@ -161,124 +175,131 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(myAudio)
             myAudio.currentTime = 0
             myAudio.play()
-          })
-
-          editBtn.addEventListener('click', (e) => {
-            if (e.target.dataset.action === "off") {
-              e.target.dataset.action = "on"
-              e.target.innerText = "Edit: On"
-            }
-            else {
-              e.target.dataset.action = "off"
-              e.target.innerText = "Edit: Off"
-            }
-          })
-
-          newBtn.addEventListener('click', () => {
-            newSB = !newSB
-            if (newSB) {
-              newForm.style.display = 'block'
-            } else {
-              newForm.style.display = 'none'
-            }
-          })
-
-          makeSoundboardItem = (soundboard) => {
-            return `
-            <li data-id=${soundboard.id}>
-            <button data-id=${soundboard.id} data-action="soundboard">${soundboard.name}</button>
-            <br>
-            <button data-id=${soundboard.id} data-action="delete">Delete</button>
-            </li>
-            `
           }
+        })
 
-          fetch(soundboardsURL, {})
-          .then(obj => obj.json())
-          .then(parsed => {
-            allSoundboards = parsed
-            sbList.innerHTML = ''
-            parsed.forEach(soundboard => {
-              if (soundboard.user_id == userID) {
-                sbList.innerHTML += makeSoundboardItem(soundboard)
-              }
-            })
-          })
+        editBtn.addEventListener('click', (e) => {
+          if (e.target.dataset.action === "off") {
+            e.target.dataset.action = "on"
+            e.target.innerText = "Edit: On"
+          }
+          else {
+            e.target.dataset.action = "off"
+            e.target.innerText = "Edit: Off"
+          }
+        })
 
-          newForm.addEventListener('submit', (e) => {
-            e.preventDefault()
-            let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
-            let dataIDs = soundboardEls.map(els => els.dataset.id)
-            dataIDs.unshift("")
-            currentSBName.innerText = newName.value
-            // debugger
-            fetch(soundboardsURL, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json'
-              },
-              body: JSON.stringify({
-                'name': newName.value,
-                'user_id': userID,
-                'array': `${dataIDs}`
-              })
-            }).then(obj => obj.json())
-            .then(parsed => {
-              allSoundboards.push(parsed)
-              sbList.innerHTML += makeSoundboardItem(parsed)
-              // debugger
-            })
-          })
+        newBtn.addEventListener('click', () => {
+          newSB = !newSB
+          if (newSB) {
+            newForm.style.display = 'block'
+          } else {
+            newForm.style.display = 'none'
+          }
+        })
 
-          saveBtn.addEventListener('click', (e)=>{
-            let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
-            let dataIDs = soundboardEls.map(els => els.dataset.id)
-            dataIDs.unshift("")
-            // debugger
-            fetch(`${soundboardsURL}/${clickedSBID}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json'
-              },
-              body: JSON.stringify({
-                'array': `${dataIDs}`
-              })
-            })
-          })
+        makeSoundboardItem = (soundboard) => {
+          return `
+          <li data-id=${soundboard.id}>
+          <button data-id=${soundboard.id} data-action="soundboard">${soundboard.name}</button>
+          <br>
+          <button data-id=${soundboard.id} data-action="delete">Delete</button>
+          </li>
+          `
+        }
 
-          sbList.addEventListener('click', (e) => {
-            let clickedSoundboard = allSoundboards.find(soundboard => {
-              return soundboard.id == e.target.dataset.id
-            })
-            if (e.target.dataset.action === "soundboard") {
-              clickedSBID = clickedSoundboard.id
-              let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
-              let i = 0
-              soundboardEls.forEach(el => {
-                let changeEl = document.querySelector(`#${el.id}`)
-                changeEl.dataset.id = clickedSoundboard.array[i]
-                ++i
-              })
-              currentSBName.innerText = e.target.innerText
+        fetch(soundboardsURL, {})
+        .then(obj => obj.json())
+        .then(parsed => {
+          allSoundboards = parsed
+          sbList.innerHTML = ''
+          parsed.forEach(soundboard => {
+            if (soundboard.user_id == userID) {
+              sbList.innerHTML += makeSoundboardItem(soundboard)
             }
-            else if (e.target.dataset.action === "delete") {
-              e.target.parentElement.remove()
-              fetch(`${soundboardsURL}/${clickedSoundboard.id}`, {
-                method: 'DELETE'})
-              }
-            })
+          })
+        })
 
-          logoutBtn.addEventListener('click', (e) => {
-              loggedIn = false
-              if (!loggedIn) {
-                internal.style.display = 'none'
-                // internal.innerHTML = ''
-                splash.style.display = 'block'
-              }
+        newForm.addEventListener('submit', (e) => {
+          e.preventDefault()
+          let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
+          let dataIDs = soundboardEls.map(els => els.dataset.id)
+          dataIDs.unshift("")
+          currentSBName.innerText = newName.value
+          // debugger
+          fetch(soundboardsURL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            },
+            body: JSON.stringify({
+              'name': newName.value,
+              'user_id': userID,
+              'array': `${dataIDs}`
+            })
+          }).then(obj => obj.json())
+          .then(parsed => {
+            allSoundboards.push(parsed)
+            sbList.innerHTML += makeSoundboardItem(parsed)
+            // debugger
+          })
+        })
+
+        saveBtn.addEventListener('click', (e)=>{
+          let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
+          let dataIDs = soundboardEls.map(els => els.dataset.id)
+          dataIDs.unshift("")
+          // debugger
+          fetch(`${soundboardsURL}/${clickedSBID}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            },
+            body: JSON.stringify({
+              'array': `${dataIDs}`
+            })
+          })
+        })
+
+        sbList.addEventListener('click', (e) => {
+          let clickedSoundboard = allSoundboards.find(soundboard => {
+            return soundboard.id == e.target.dataset.id
+          })
+          if (e.target.dataset.action === "soundboard") {
+            clickedSBID = clickedSoundboard.id
+            let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
+            let i = 0
+            soundboardEls.forEach(el => {
+              let changeEl = document.querySelector(`#${el.id}`)
+              changeEl.dataset.id = clickedSoundboard.array[i]
+              ++i
+            })
+            currentSBName.innerText = e.target.innerText
+          }
+          else if (e.target.dataset.action === "delete") {
+            e.target.parentElement.remove()
+            fetch(`${soundboardsURL}/${clickedSoundboard.id}`, {
+              method: 'DELETE'})
+            }
           })
 
+        logoutBtn.addEventListener('click', (e) => {
+            loggedIn = false
+            clickedSBID = null
+            let soundboardEls = [].slice.call(soundboardDiv.querySelectorAll(".foo"))
+            soundboardEls.forEach(el => {
+              let changeEl = document.querySelector(`#${el.id}`)
+              changeEl.dataset.id = null
+            })
+            currentSBName.innerText = 'Untitled'
+            if (!loggedIn) {
+              internal.style.display = 'none'
+              // internal.innerHTML = ''
+              splash.style.display = 'block'
+            }
+        })
       }
     }
   })
