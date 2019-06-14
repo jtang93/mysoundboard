@@ -6,7 +6,7 @@ let clickedTarget
 let userID
 
 document.addEventListener('DOMContentLoaded', () => {
-  const usersURL = 'http://localhost:3000/api/v1/users'
+  const usersURL = 'https://frozen-caverns-22084.herokuapp.com/api/v1/users'
 
   const usernameField = document.querySelector('#usernameField')
   const loginBtn = document.querySelector('#loginBtn')
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
         welcome.innerText = `Welcome, ${usernameField.value}`
         usernameField.value = ""
         // -----------------
-        const soundboardsURL = 'http://localhost:3000/api/v1/soundboards'
-        const soundsURL = 'http://localhost:3000/api/v1/sounds'
+        const soundboardsURL = 'https://frozen-caverns-22084.herokuapp.com/api/v1/soundboards'
+        const soundsURL = 'https://frozen-caverns-22084.herokuapp.com/api/v1/sounds'
 
         const logoutBtn = document.querySelector('#logoutBtn')
         const currentSBName = document.querySelector('#currentSBName')
