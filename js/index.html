@@ -15,6 +15,7 @@
           <input id="loginBtn" type="submit" value="Log In">
         </form>
         <button id="newUser">New User</button>
+        <button id="guestLogin">Log in as Guest</button>
       </div>
     </div>
 
@@ -51,11 +52,13 @@
 
         </div>
 
-        <div id = "soundboardCountainer" class="center mainitem">
-          <div id="soundboard">
-            <div class="">
-              <h2 id="currentSBName">Untitled</h2>
-            </div>
+        <div id = "soundboardContainer" class="center mainitem">
+
+          <div id="soundboardName">
+            <h2 id="currentSBName"><-- Select a soundboard!</h2>
+          </div>
+
+          <div class="soundboard" id="soundboard">
             <div class="firstRow">
               <div class="foo blue" id="q">q</div>
               <div class="foo purple" id="w">w</div>
@@ -68,27 +71,27 @@
               <div class="foo wine" id="d">d</div>
             </div>
 
-            <div class=thirdRow"">
+            <div class="thirdRow">
               <div class="foo blue" id="z">z</div>
               <div class="foo purple" id="x">x</div>
               <div class="foo wine" id="c">c</div>
             </div>
 
-            <div class="soundboardButtons">
-              <button id="editBtn" data-action="off">Edit: Off</button>
-              <button id="saveBtn" data-action="save">Save</button>
-              <button id="newBtn" data-action="new">New</button>
-
-                <br></br>
-                <form id="newForm" style="display: none;">
-                  <input id="newName" type="text" placeholder="Enter your soundboard name">
-                  <br></br>
-                  <input id="newFormBtn" type="submit" value="Make new soundboard!">
-                </form>
-
-
-            </div>
           </div>
+
+          <div class="soundboardButtons">
+            <button id="editBtn" data-action="off">Edit: Off</button>
+            <button id="saveBtn" data-action="save">Save</button>
+            <button id="newBtn" data-action="new">New</button>
+
+            <br>
+            <form id="newForm" style="display: none;">
+              <input id="newName" type="text" placeholder="Enter your soundboard name">
+              <br>
+              <input id="newFormBtn" type="submit" value="Make new soundboard!">
+            </form>
+          </div>
+
         </div>
 
         <div id = "soundsContainer" class="rightbar mainitem">

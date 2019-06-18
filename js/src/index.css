@@ -67,7 +67,7 @@
   margin: 20px
 }
 
-/* .soundboardButtons {
-  display: flex;
-  flex-direction: column;
-} */
+.soundboard{
+  width: 160px;
+  height: 160px;
+}
